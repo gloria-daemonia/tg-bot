@@ -1,0 +1,46 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@2.4.0
+
+parameters:
+  run_test_build_push:
+    type: boolean
+    default: false
+
+workflows:
+  test_build_push:
+    when: << pipeline.parameters.run_test_build_push >>
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore: master
+      - docker/publish:
+          executor: docker/docker
+          cache_from: pandemonic/fastiv-youth-bot:latest
+          image: pandemonic/fastiv-youth-bot
+          tag: $CIRCLE_SHA1,latest
+          use-remote-docker: true
+          remote-docker-dlc: true
+          context:
+          - Docker_context
+          filters:
+            branches:
+              only: master
+
+executors:
+  go:
+    docker:
+    - image: cimg/go:1.21.4
+
+jobs:
+  test:
+    executor: go
+    working_directory: ~/project
+    steps:
+    - checkout:
+        path: ~/project
+    - run:
+        name: Run tests
+        command: echo "run go test placeholder (better to use circleci/go orb in future)"

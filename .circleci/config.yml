@@ -1,0 +1,15 @@
+version: 2.1
+setup: true
+
+orbs:
+  path-filtering: circleci/path-filtering@1.0.0
+
+workflows:
+  always_run:
+    jobs:
+    - path-filtering/filter:
+        name: check_updated_dir
+        mapping: |
+          telegram-bot/.* run_test_build_push true
+        base-revision: << pipeline.git.base_revision >>
+        config-path: .circleci/continue_config.yml

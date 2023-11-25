@@ -1,0 +1,39 @@
+# looks like not needed
+# tried to run it in k3s on:
+# t3.small - too big
+# t3.micro - enough to work
+# but:
+# the instnance with k3s take near 800mb of memory
+# running bot takes almost 10mb of memory in a container
+# so:
+# it will be better to move it to Fargate
+# or rework the bot to the webhook arch and move it to Lambda
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegram-bot-deployment
+  labels:
+    app: telegram-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegram-bot
+  template:
+    metadata:
+      labels:
+        app: telegram-bot
+    spec:
+      containers:
+      - name: telegram-bot-container
+        image: pandemonic/fastiv-youth-bot:0.0.1
+        env:
+        - name: TELEGRAM_APITOKEN
+          value: "telegram_apitoken_placeholder"
+        # resources:
+        #   requests:
+        #     memory: "64Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
