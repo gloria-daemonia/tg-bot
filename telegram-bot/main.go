@@ -36,7 +36,7 @@ func main() {
 			continue
 		}
 		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("response: %s",update.Message.Text))
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("Response:\n%s",update.Message.Text))
 		_, err := bot.Send(msg)
 		if err != nil {
 			log.Println(err)
