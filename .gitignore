@@ -27,3 +27,4 @@ terraform.tfstate*
 *.tfstate
 config.tf
 aws_key*
+api_key.auto.tfvars
